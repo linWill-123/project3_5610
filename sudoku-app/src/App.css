@@ -1,38 +1,109 @@
-.App {
+/* Home page specific styles */
+.hero-section {
   text-align: center;
+  padding: 3rem 0 2rem 0;
+  background-color: #fbfbfb;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid #e1e8ed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6rem;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.game-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.game-subtitle {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  color: #7f8c8d;
+  font-weight: 400;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.auth-section {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.choose-title {
+  font-size: 2rem;
+  text-align: center;
+  color: #2c3e50;
+}
+
+.auth-links {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.auth-link {
+  color: #0099ff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.auth-link:hover {
+  color: #2980b9;
+}
+
+.difficulty-buttons {
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  gap: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #d1d5db;
+  display: inline-flex;
+  margin-top: 2rem;
 }
 
-.App-link {
-  color: #61dafb;
+.difficulty-btn {
+  padding: 10px 20px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  border-right: 1px solid #d1d5db;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.logo-container {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    flex-direction: column;
+    gap: 3rem;
+    padding: 2rem 1rem;
   }
-  to {
-    transform: rotate(360deg);
+
+  .choose-title {
+    font-size: 1.5rem;
+  }
+
+  .difficulty-buttons {
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .difficulty-btn {
+    border-right: none;
+    border-bottom: 1px solid #d1d5db;
+  }
+
+  .logo-container {
+    display: none;
   }
 }
