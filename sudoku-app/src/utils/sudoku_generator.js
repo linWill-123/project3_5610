@@ -206,16 +206,3 @@ function easySudoku() {
 
   return board;
 }
-
-// TO TEST
-// we are running each function 3 times to determine that the outputs are unique
-console.log("Testing code...");
-console.log("EASY SUDOKU:");
-easySudoku();
-easySudoku();
-easySudoku();
-
-console.log("HARD SUDOKU:");
-hardSudoku();
-hardSudoku();
-hardSudoku();
