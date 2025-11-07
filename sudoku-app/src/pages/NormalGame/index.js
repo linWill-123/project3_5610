@@ -1,0 +1,1 @@
+export { NormalGamePage } from "./NormalGamePage";

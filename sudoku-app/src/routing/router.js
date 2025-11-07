@@ -7,6 +7,8 @@ import { LoginPage } from "../pages/Login";
 import { RegisterPage } from "../pages/Register";
 import { HomePage } from "../pages/Home";
 import { SelectionPage } from "../pages/Selection";
+import { EasyGamePage } from "../pages/EasyGame";
+import { NormalGamePage } from "../pages/NormalGame";
 
 export const router = createBrowserRouter([
   {
@@ -37,15 +39,14 @@ export const router = createBrowserRouter([
         path: "register",
         element: <RegisterPage />,
       },
-      // Game routes will be added later
-      // {
-      //   path: "games/easy",
-      //   element: <EasyGame />,
-      // },
-      // {
-      //   path: "games/normal",
-      //   element: <NormalGame />,
-      // },
+      {
+        path: "games/easy",
+        element: <EasyGamePage />,
+      },
+      {
+        path: "games/normal",
+        element: <NormalGamePage />,
+      },
     ],
   },
 ]);
