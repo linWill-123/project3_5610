@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { useSudoku } from "../context/SudokuContext";
-import SudokuCell from "./SudokuCell/SudokuCell";
-import { easySudoku, hardSudoku } from "../utils/sudoku_generator";
+import { useSudoku } from "../../context/SudokuContext";
+import SudokuCell from "../SudokuCell/SudokuCell";
+import { easySudoku, hardSudoku } from "../../utils/sudoku_generator";
 import "./SudokuGame.css";
 
 const SudokuGame = ({ mode, title, difficulty }) => {
