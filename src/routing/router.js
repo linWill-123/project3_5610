@@ -9,6 +9,7 @@ import { HomePage } from "../pages/Home";
 import { SelectionPage } from "../pages/Selection";
 import { EasyGamePage } from "../pages/EasyGame";
 import { NormalGamePage } from "../pages/NormalGame";
+import { GamePage } from "../pages/Game";
 
 export const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ export const router = createBrowserRouter([
       {
         path: "games",
         element: <SelectionPage />,
+      },
+      {
+        path: "game/:gameId",
+        element: <GamePage />,
       },
       {
         path: "rules",

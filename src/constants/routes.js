@@ -1,6 +1,7 @@
 export const ROUTES = {
   HOME: "/",
   GAMES: "/games",
+  GAME: "/game/:gameId",
   EASY_GAME: "/games/easy",
   NORMAL_GAME: "/games/normal",
   RULES: "/rules",

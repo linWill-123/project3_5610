@@ -1,0 +1,14 @@
+.loading-message,
+.error-message {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+}
+
+.error-message {
+  color: #e74c3c;
+}
+
+.loading-message {
+  color: #3498db;
+}
