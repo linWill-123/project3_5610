@@ -2,9 +2,9 @@
 
 ## Overview
 This is a full-stack Sudoku application with:
-- **Frontend**: React app with routing and game logic
-- **Backend**: Express.js REST API server
-- **Database**: MongoDB Atlas for persistent storage
+- **Frontend**: React 
+- **Backend**: Express.js + RESTFUL API
+- **Database**: MongoDB Atlas 
 
 ## Prerequisites
 - Node.js installed
@@ -12,33 +12,35 @@ This is a full-stack Sudoku application with:
 
 ### 1. Install Dependencies
 
-#### Frontend (Root directory):
+#### Frontend (Frontend directory):
 ```bash
+cd frontend
 npm install
 ```
 
 #### Backend (Server directory):
 ```bash
-cd server
+cd backend
 npm install
 ```
 
 ### 2. Running 
 
-You need to run **both** the backend server and the frontend React app:
+You need to run both the backend server and the frontend React app:
 
-In one terminal, run
+In one terminal, navigate to **backend** folder and 
 ```bash
-npm run server
+npm start
 ```
-Or for development with auto-reload:
+
+Or run 
 ```bash
 npm run dev
 ```
 
 The server will run on `http://localhost:5000`
 
-In another terminal start frontend by:
+In another terminal navigate to **frontend** and run:
 ```bash
 npm start
 ```
