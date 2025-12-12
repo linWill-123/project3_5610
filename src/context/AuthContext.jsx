@@ -21,8 +21,8 @@ export const AuthProvider = ({ children }) => {
     const loadUser = async () => {
       if (token) {
         try {
-          const userData = await authApi.getCurrentUser(token);
-          setUser(userData);
+          const data = await authApi.getCurrentUser(token);
+          setUser(data.user || data);
         } catch (error) {
           console.error('Failed to load user:', error);
           // clear invalid token
@@ -38,6 +38,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     const data = await authApi.login(username, password);
+    console.log('Login response:', data);
     localStorage.setItem('token', data.token);
     setToken(data.token);
     setUser(data.user);
@@ -46,6 +47,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (username, email, password) => {
     const data = await authApi.register(username, email, password);
+    console.log('Register response:', data);
     localStorage.setItem('token', data.token);
     setToken(data.token);
     setUser(data.user);
@@ -67,6 +69,9 @@ export const AuthProvider = ({ children }) => {
     logout,
     isAuthenticated: !!user,
   };
+
+  // Debug logging
+  console.log('AuthContext state:', { user, token: !!token, isAuthenticated: !!user });
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

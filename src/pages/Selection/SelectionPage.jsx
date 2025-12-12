@@ -47,6 +47,7 @@ export const SelectionPage = () => {
 
     try {
       const username = user?.username || 'Guest';
+      console.log('Creating game with user:', user, 'username:', username);
       const result = await sudokuApi.createGame(selectedDifficulty, username, gameName.trim());
       setShowNameModal(false);
       navigate(`/game/${result.gameId}`);
