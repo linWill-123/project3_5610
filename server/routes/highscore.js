@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const HighScore = require('../models/HighScore');
 const Game = require('../models/Game');
+const UserGameProgress = require('../models/UserGameProgress');
 
 // GET /api/highscore - Get all high scores (sorted)
 router.get('/', async (req, res) => {
@@ -30,37 +31,50 @@ router.get('/games/by-completion', async (req, res) => {
   try {
     const { difficulty } = req.query;
     
-    // Aggregate high scores by gameId to count completions
-    const matchStage = difficulty && ['EASY', 'NORMAL'].includes(difficulty.toUpperCase())
-      ? { difficulty: difficulty.toUpperCase() }
-      : {};
-
-    const gameStats = await HighScore.aggregate([
-      { $match: matchStage },
-      {
-        $group: {
-          _id: '$gameId',
-          completionCount: { $sum: 1 },
-          bestTime: { $min: '$time' },
-          bestPlayer: { $first: '$username' },
-          difficulty: { $first: '$difficulty' }
-        }
-      },
-      { $match: { completionCount: { $gt: 0 } } }, // Only games with at least 1 completion
-      { $sort: { completionCount: -1, bestTime: 1 } }, // Sort by completion count desc, then best time
+    // Aggregate UserGameProgress to count completions per game
+    const gameStats = await UserGameProgress.aggregate([
+      { $match: { isCompleted: true } },
       {
         $lookup: {
           from: 'games',
-          localField: '_id',
+          localField: 'gameId',
           foreignField: '_id',
           as: 'gameInfo'
         }
       },
       { $unwind: '$gameInfo' },
+      ...(difficulty && ['EASY', 'NORMAL'].includes(difficulty.toUpperCase()) 
+        ? [{ $match: { 'gameInfo.difficulty': difficulty.toUpperCase() } }] 
+        : []
+      ),
+      {
+        $group: {
+          _id: '$gameId',
+          completionCount: { $sum: 1 },
+          gameName: { $first: '$gameInfo.name' },
+          difficulty: { $first: '$gameInfo.difficulty' }
+        }
+      },
+      { $match: { completionCount: { $gt: 0 } } },
+      {
+        $lookup: {
+          from: 'highscores',
+          localField: '_id',
+          foreignField: 'gameId',
+          as: 'highScore'
+        }
+      },
+      {
+        $addFields: {
+          bestTime: { $arrayElemAt: ['$highScore.time', 0] },
+          bestPlayer: { $arrayElemAt: ['$highScore.username', 0] }
+        }
+      },
+      { $sort: { completionCount: -1, bestTime: 1 } },
       {
         $project: {
           gameId: '$_id',
-          gameName: '$gameInfo.name',
+          gameName: 1,
           difficulty: 1,
           completionCount: 1,
           bestTime: 1,
