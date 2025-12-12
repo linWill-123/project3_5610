@@ -97,14 +97,14 @@ export const SelectionPage = () => {
         <button 
           className="difficulty-btn easy-btn" 
           onClick={() => handleCreateGameClick('EASY')}
-          style={{ padding: '0.75rem 2rem', fontSize: '1rem', cursor: 'pointer' }}
+          style={{ padding: '0.75rem 2rem', fontSize: '1rem', cursor: 'pointer', border: 'none' }}
         >
           Create Easy Game
         </button>
         <button 
           className="difficulty-btn medium-btn" 
           onClick={() => handleCreateGameClick('NORMAL')}
-          style={{ padding: '0.75rem 2rem', fontSize: '1rem', cursor: 'pointer' }}
+          style={{ padding: '0.75rem 2rem', fontSize: '1rem', cursor: 'pointer', border: 'none' }}
         >
           Create Normal Game
         </button>
