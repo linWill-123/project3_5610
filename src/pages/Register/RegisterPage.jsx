@@ -60,7 +60,7 @@ export const RegisterPage = () => {
 
     try {
       await register(formData.username, formData.email, formData.password);
-      navigate(ROUTES.SELECTION); // Redirect to game selection after registration
+      navigate(ROUTES.HOME); // Redirect to home page after registration
     } catch (err) {
       setError(err.message || "Failed to create account. Please try again.");
     } finally {

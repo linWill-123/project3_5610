@@ -30,7 +30,7 @@ export const LoginPage = () => {
 
     try {
       await login(formData.username, formData.password);
-      navigate(ROUTES.SELECTION); // Redirect to game selection after login
+      navigate(ROUTES.HOME); // Redirect to home page after login
     } catch (err) {
       setError(err.message || "Failed to login. Please check your credentials.");
     } finally {
