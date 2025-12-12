@@ -14,8 +14,9 @@ const SudokuGame = ({
   gameId = null, 
   initialBoard = null, 
   solution = null,
-  isCompleted: initialCompleted = false,
-  completionTime: initialCompletionTime = null,
+  userCompleted = false,
+  userCompletionTime = null,
+  completionCount = 0,
 }) => {
   const {
     board,
@@ -43,7 +44,7 @@ const SudokuGame = ({
 
   // Handle game completion - update database and submit high score
   useEffect(() => {
-    if (gameWon && gameId && !initialCompleted && board) {
+    if (gameWon && gameId && !userCompleted && board) {
       handleGameCompletion();
     }
   }, [gameWon, gameId, board]);
@@ -52,16 +53,13 @@ const SudokuGame = ({
     if (!board) return;
     
     try {
-      // Update game in database as completed
-      await sudokuApi.updateGame(gameId, {
-        isCompleted: true,
-        completionTime: timer,
-        board: board
-      });
-
+      const userId = user?.username || 'Guest';
+      
+      // Record user's completion
+      await sudokuApi.completeGame(gameId, userId, timer);
+      
       // Submit high score
-      const username = user?.username || 'Guest';
-      const result = await highScoreApi.submitHighScore(gameId, username, timer);
+      const result = await highScoreApi.submitHighScore(gameId, userId, timer);
       
       if (result.isNewRecord) {
         console.log('New high score!', result);
@@ -92,9 +90,9 @@ const SudokuGame = ({
     // Use initialBoard as the original board (starting state)
     const newOriginalBoard = initialBoard.map((row) => [...row]);
     
-    // If game is completed, show the solution
+    // If user has completed this game, show the solution
     let currentBoard;
-    if (initialCompleted && solution && Array.isArray(solution)) {
+    if (userCompleted && solution && Array.isArray(solution)) {
       currentBoard = solution.map((row) => [...row]);
     } else {
       currentBoard = initialBoard.map((row) => [...row]);
@@ -185,15 +183,10 @@ const SudokuGame = ({
       {gameWon && (
         <div className="victory-message">
           Congratulations! You completed the puzzle in {formatTime(timer)}!
-          {initialCompleted && initialCompletionTime && (
-            <div style={{ marginTop: '0.5rem', fontSize: '0.9rem' }}>
-              Previously completed in {formatTime(initialCompletionTime)}
-            </div>
-          )}
         </div>
       )}
 
-      {initialCompleted && !gameWon && (
+      {userCompleted && !gameWon && (
         <div className="completed-notice" style={{ 
           background: '#e8f4f8', 
           padding: '1rem', 
@@ -201,11 +194,15 @@ const SudokuGame = ({
           borderRadius: '8px',
           textAlign: 'center'
         }}>
-          This game was previously completed in {formatTime(initialCompletionTime || 0)}. The solution is displayed below.
+          You previously completed this game in {formatTime(userCompletionTime || 0)}. 
+          {completionCount > 1 && ` This puzzle has been completed by ${completionCount} player${completionCount > 1 ? 's' : ''}.`}
+          <div style={{ marginTop: '0.5rem', fontSize: '0.9rem', color: '#666' }}>
+            The solution is displayed below.
+          </div>
         </div>
       )}
 
-      {isPaused && !gameWon && (
+      {isPaused && !gameWon && !userCompleted && (
         <div className="pause-overlay">
           <div className="pause-message">Game Paused</div>
           <button className="resume-btn" onClick={handlePause}>
@@ -214,7 +211,7 @@ const SudokuGame = ({
         </div>
       )}
 
-      {!isPaused && !gameWon && !initialCompleted && (
+      {!isPaused && !gameWon && !userCompleted && (
         <div>
           <div
             className="game-board"
@@ -241,7 +238,7 @@ const SudokuGame = ({
         </div>
       )}
 
-      {initialCompleted && (
+      {userCompleted && (
         <div>
           <div className="game-board">
             <div className={gridClass}>

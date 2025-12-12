@@ -10,8 +10,11 @@ export const sudokuApi = {
     return response.json();
   },
 
-  getGame: async (gameId) => {
-    const response = await fetch(`${API_BASE_URL}/sudoku/${gameId}`);
+  getGame: async (gameId, userId = null) => {
+    const url = userId 
+      ? `${API_BASE_URL}/sudoku/${gameId}?userId=${userId}`
+      : `${API_BASE_URL}/sudoku/${gameId}`;
+    const response = await fetch(url);
     if (!response.ok) throw new Error('Failed to fetch game');
     return response.json();
   },
@@ -48,6 +51,18 @@ export const sudokuApi = {
       method: 'DELETE',
     });
     if (!response.ok) throw new Error('Failed to delete game');
+    return response.json();
+  },
+
+  completeGame: async (gameId, userId, completionTime) => {
+    const response = await fetch(`${API_BASE_URL}/sudoku/${gameId}/complete`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId, completionTime }),
+    });
+    if (!response.ok) throw new Error('Failed to record game completion');
     return response.json();
   },
 };

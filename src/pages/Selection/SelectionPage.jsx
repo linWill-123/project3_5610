@@ -176,6 +176,11 @@ export const SelectionPage = () => {
                 <span className="stat">
                   {game.difficulty === 'EASY' ? '6×6 Grid' : '9×9 Grid'}
                 </span>
+                {game.completionCount > 0 && (
+                  <span className="stat completion-count" style={{ color: '#3498db', fontWeight: '500' }}>
+                    • {game.completionCount} completion{game.completionCount !== 1 ? 's' : ''}
+                  </span>
+                )}
               </div>
             </div>
             <button 

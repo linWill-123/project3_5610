@@ -3,23 +3,26 @@ import { useParams, useNavigate } from "react-router-dom";
 import { SudokuProvider } from "../../context/SudokuContext";
 import SudokuGame from "../../components/SudokuGame/SudokuGame";
 import { sudokuApi } from "../../services/api";
+import { useAuth } from "../../context/AuthContext";
 import "./GamePage.css";
 
 export const GamePage = () => {
   const { gameId } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [gameData, setGameData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     loadGame();
-  }, [gameId]);
+  }, [gameId, user]);
 
   const loadGame = async () => {
     try {
       setLoading(true);
-      const data = await sudokuApi.getGame(gameId);
+      const userId = user?.username || 'Guest';
+      const data = await sudokuApi.getGame(gameId, userId);
       setGameData(data);
       setError(null);
     } catch (err) {
@@ -62,8 +65,9 @@ export const GamePage = () => {
         gameId={gameId}
         initialBoard={gameData.board}
         solution={gameData.solution}
-        isCompleted={gameData.isCompleted}
-        completionTime={gameData.completionTime}
+        userCompleted={gameData.userCompleted}
+        userCompletionTime={gameData.userCompletionTime}
+        completionCount={gameData.completionCount}
       />
     </SudokuProvider>
   );
